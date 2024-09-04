@@ -2,12 +2,24 @@ const request = require("supertest");
 const app = require("../app");
 const mongoose = require("mongoose");
 const { connect, disconnectDB } = require("../db/connectDB");
-beforeEach(async () => {
+
+// const BASE_URL = "https://supertest-deploy-1.onrender.com";
+
+// beforeEach(async () => {
+//   await connect(process.env.MONGO_URI).then(() => console.log("ok"));
+//   await mongoose.connection.db.dropDatabase();
+// });
+
+// afterEach(async () => {
+//   await disconnectDB();
+// });
+
+beforeAll(async () => {
   await connect(process.env.MONGO_URI).then(() => console.log("ok"));
   await mongoose.connection.db.dropDatabase();
 });
 
-afterEach(async () => {
+afterAll(async () => {
   await disconnectDB();
 });
 
@@ -49,7 +61,6 @@ describe("CRUD routes", () => {
       title: "todo #2",
       description: "it is desc for todo #2",
     });
-
     expect(response.status).toBe(200);
     expect(response.body.title).toBe("todo #2");
     expect(response.body.description).toBe("it is desc for todo #2");
